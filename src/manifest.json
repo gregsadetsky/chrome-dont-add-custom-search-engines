@@ -1,0 +1,29 @@
+{
+  "author": "Greg Sadetsky",
+  "manifest_version": 2,
+  "name": "Don't add custom search engines",
+  "version": "0.0.1",
+  "description": "Prevent Google Chrome from auto-adding custom search engines (also known as \"OpenSearch\").",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "background": {
+    "scripts": ["bg.js"]
+  },
+  "icons": {
+    "64": "icon-64.png",
+    "128": "icon-128.png"
+  },
+  "browser_action": {
+    "default_title": "Don't add custom search engines",
+    "default_icon": "icon-64.png"
+  },
+  "permissions": [
+    "http://*/*",
+    "https://*/*"
+  ]
+}
