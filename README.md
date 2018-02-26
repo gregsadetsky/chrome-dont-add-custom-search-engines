@@ -2,11 +2,13 @@
 
 A Google Chrome Extension to stop sites from adding custom "OpenSearch" search engines.
 
-[The extension on the Chrome Web Store](https://chrome.google.com/webstore/detail/dont-add-custom-search-en/dnodlcololidkjgbpeoleabmkocdhacc).
+There used to be a link to Chrome Extension here, but [the author](https://github.com/gregsadetsky) stopped supporting it, apparently...
+
+You can just clone the repo and load the extension manually ([see this guide](https://developer.chrome.com/extensions/getstarted#unpacked)).
 
 ---
 
-####Credits
+#### Credits
 
 This extension is based on the following StackOverflow answer by [10basetom](http://superuser.com/users/58978/10basetom):
 
