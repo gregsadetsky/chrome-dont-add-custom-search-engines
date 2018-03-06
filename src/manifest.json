@@ -1,9 +1,11 @@
 {
-  "author": "Greg Sadetsky",
+  "author": "Greg Sadetsky et al.",
   "manifest_version": 2,
   "name": "Don't add custom search engines",
-  "version": "0.0.1",
-  "description": "Prevent Google Chrome from auto-adding custom search engines (also known as \"OpenSearch\").",
+  "version": "0.0.2",
+  "description": "Prevent Google Chrome from auto-adding custom search engines",
+  "minimum_chrome_version": "49.0.0.0",
+  "offline_enabled": true,
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
