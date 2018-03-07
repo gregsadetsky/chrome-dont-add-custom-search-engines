@@ -1,12 +1,9 @@
-// Things marked "##" are ones I tried that didn't work
 
-//## Add a no-op "onsubmit" to any form that doesn't have one.
 // Add an extra child input to any form that only has one
 function spoilFormGet(elem) {
  console.info({Found: elem});
 
  // Bail early if it's already one Chrome won't autodetect
- //##if(elem.onsubmit) return;
  if(!/^http/i.test(elem.action)) return;
   // Need to check this here rather than in the selector since elem.action
   // is a full URL (in my testing) even if the form specifies
@@ -22,12 +19,10 @@ function spoilFormGet(elem) {
  if(elem.querySelector(':scope input[type="file" i]')) return;
  if(elem.querySelector(':scope textarea')) return;
 
-//## // Add an "onsubmit" so Chrome won't autodetect it
-//## elem.onsubmit = function() { return 42===42; };
-//## elem.setAttribute('onsubmit', 'return 42===42;');
-
- var newelem = document.createElement('input');
- newelem.type = 'text';
+ // Add a <textarea> - unlike <input>, it doesn't block implicit submission
+ // per https://www.tjvantoll.com/2013/01/01/enter-should-submit-forms-stop-messing-with-that/
+ var newelem;
+ newelem = document.createElement('textarea');
  newelem.name = 'chrome_dont_add_custom_search_engines_srsly';
  newelem.style.display='none';
  elem.appendChild(newelem);
@@ -65,3 +60,4 @@ function main() {
 
 document.addEventListener('DOMContentLoaded', main);
 
+// vi: set ts=1 sts=1 sw=1 et ai: //
