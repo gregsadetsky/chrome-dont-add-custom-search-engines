@@ -9,6 +9,10 @@ function spoilFormGet(elem) {
   // is a full URL (in my testing) even if the form specifies
   // action="/whatever/path".
 
+ if(String(elem.method).toLowerCase() !== 'get') return;
+  // Ditto - have to check here in case the form doesn't expressly specify
+  // a method
+
  var texts = elem.querySelectorAll(':scope input[type="text" i]');
  var searches = elem.querySelectorAll(':scope input[type="search" i]');
  var onetext = (texts.length === 1 && searches.length === 0);
@@ -50,7 +54,9 @@ function main() {
  );
 
  // Chrome autodetection, https://www.chromium.org/tab-to-search #2
- document.querySelectorAll('form[method="get" i]').forEach(spoilFormGet);
+ // Can't test for form[method="get" i] here because bleepingcomputer.com's
+ // search form doesn't have an express @method
+ document.querySelectorAll('form').forEach(spoilFormGet);
 
 } //main
 
