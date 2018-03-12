@@ -1,14 +1,10 @@
 # Don't add custom search engines to Google Chrome
 
-A Google Chrome Extension to stop sites from adding custom "OpenSearch" search engines.
+A Google Chrome Extension to stop sites from adding custom search engines.
 
-There used to be a link to Chrome Extension here, but [the author](https://github.com/gregsadetsky) stopped supporting it, apparently...
+[Available on the Chrome Web Store](https://chrome.google.com/webstore/detail/dont-add-custom-search-en/dnodlcololidkjgbpeoleabmkocdhacc)
 
-You can just clone the repo and load the extension manually ([see this guide](https://developer.chrome.com/extensions/getstarted#unpacked)).
-
----
-
-#### Credits
+## Credits
 
 This extension is based on the following StackOverflow answer by [10basetom](http://superuser.com/users/58978/10basetom):
 
@@ -28,6 +24,8 @@ Thanks to the following answers:
  - [Change the Chrome extension icon](http://stackoverflow.com/a/16924274)
  - [How to add google chrome omnibox-search support for your site?](http://stackoverflow.com/a/32687089) (don't do this!) :-)
 
+## Contributors
+
 Originally by [gregsadetsky](https://github.com/gregsadetsky).
 
 Additional contributors (in alphabetical order):
@@ -35,6 +33,7 @@ Additional contributors (in alphabetical order):
  - [cxw42](https://github.com/cxw42)
  - [jhard](https://github.com/jhard)
  - [karlicoss](https://github.com/karlicoss)
+ - [panozzaj](https://github.com/panozzaj)
  - [rspeed](https://github.com/rspeed)
 
 
