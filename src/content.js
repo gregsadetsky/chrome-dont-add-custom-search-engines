@@ -4,12 +4,22 @@ function spoilFormGet(elem) {
  console.info({Found: elem});
 
  // Bail early if it's already one Chrome won't autodetect
- if(!/^http/i.test(elem.action)) return;
+ if( (!/^http/i.test(elem.getAttribute('action'))) &&
+     (!/^http/i.test(elem.action))
+ ) {
+  return;
+ }
   // Need to check this here rather than in the selector since elem.action
   // is a full URL (in my testing) even if the form specifies
   // action="/whatever/path".
+  // Use getAttribute() since otherwise <input name="action"> is exposed as
+  // elem.action.
 
- if(String(elem.method).toLowerCase() !== 'get') return;
+ if( (String(elem.getAttribute('method')).toLowerCase() !== 'get') &&
+     (String(elem.method).toLowerCase() !== 'get')
+ ) {
+  return;
+ }
   // Ditto - have to check here in case the form doesn't expressly specify
   // a method
 
