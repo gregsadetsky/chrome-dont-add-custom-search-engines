@@ -1,7 +1,7 @@
 
 // Add an extra child input to any form that only has one
 function spoilFormGet(elem) {
- console.info({Found: elem});
+ // console.info({Found: elem});
 
  // Bail early if it's already one Chrome won't autodetect
  if( (!/^http/i.test(elem.getAttribute('action'))) &&
@@ -41,7 +41,7 @@ function spoilFormGet(elem) {
  newelem.style.display='none';
  elem.appendChild(newelem);
 
- console.info({Spoiled: elem});
+ // console.info({Spoiled: elem});
 } //spoilFormGet
 
 function main() {
@@ -51,7 +51,7 @@ function main() {
  document.querySelectorAll('[type="application/opensearchdescription+xml" i]').forEach(
   function (it) {
    it.removeAttribute('type');
-   console.info({"Spoiled by type removal": it});
+   // console.info({"Spoiled by type removal": it});
   }
  );
 
@@ -59,7 +59,7 @@ function main() {
  document.querySelectorAll('url[rel="suggestions" i]').forEach(
   function (it) {
    it.removeAttribute('rel');
-   console.info({"Spoiled by rel removal": it});
+   // console.info({"Spoiled by rel removal": it});
   }
  );
 
