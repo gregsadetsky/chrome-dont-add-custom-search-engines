@@ -3,11 +3,7 @@
 function spoilFormGet(elem) {
  // console.info({Found: elem});
 
- var texts = elem.querySelectorAll(':scope input[type="text" i]');
- var searches = elem.querySelectorAll(':scope input[type="search" i]');
- var onetext = (texts.length === 1 && searches.length === 0);
- var onesearch = (texts.length === 0 && searches.length === 1);
- if( !(onetext || onesearch) ) return;
+ if(elem.querySelectorAll(':scope input:-webkit-any([type="text" i],[type="search" i])').length === 1) return;
 
  if(elem.querySelector(':scope input[type="password" i]')) return;
  if(elem.querySelector(':scope input[type="file" i]')) return;
