@@ -3,26 +3,6 @@
 function spoilFormGet(elem) {
  // console.info({Found: elem});
 
- // Bail early if it's already one Chrome won't autodetect
- if( (!/^http/i.test(elem.getAttribute('action'))) &&
-     (!/^http/i.test(elem.action))
- ) {
-  return;
- }
-  // Need to check this here rather than in the selector since elem.action
-  // is a full URL (in my testing) even if the form specifies
-  // action="/whatever/path".
-  // Use getAttribute() since otherwise <input name="action"> is exposed as
-  // elem.action.
-
- if( (String(elem.getAttribute('method')).toLowerCase() !== 'get') &&
-     (String(elem.method).toLowerCase() !== 'get')
- ) {
-  return;
- }
-  // Ditto - have to check here in case the form doesn't expressly specify
-  // a method
-
  var texts = elem.querySelectorAll(':scope input[type="text" i]');
  var searches = elem.querySelectorAll(':scope input[type="search" i]');
  var onetext = (texts.length === 1 && searches.length === 0);
@@ -64,9 +44,7 @@ function main() {
  );
 
  // Chrome autodetection, https://www.chromium.org/tab-to-search #2
- // Can't test for form[method="get" i] here because bleepingcomputer.com's
- // search form doesn't have an express @method
- document.querySelectorAll('form').forEach(spoilFormGet);
+ document.querySelectorAll('form:-webkit-any([method="get" i],:not([method])):-webkit-any([action^="http://" i],[action^="https://" i])').forEach(spoilFormGet);
 
 } //main
 
