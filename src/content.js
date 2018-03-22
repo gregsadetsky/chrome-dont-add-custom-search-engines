@@ -5,9 +5,7 @@ function spoilFormGet(elem) {
 
  if(elem.querySelectorAll(':scope input:-webkit-any([type="text" i],[type="search" i])').length === 1) return;
 
- if(elem.querySelector(':scope input[type="password" i]')) return;
- if(elem.querySelector(':scope input[type="file" i]')) return;
- if(elem.querySelector(':scope textarea')) return;
+ if(elem.querySelector(':scope :-webkit-any(input[type="password" i],input[type="file" i],textarea)')) return;
 
  // Add a <textarea> - unlike <input>, it doesn't block implicit submission
  // per https://www.tjvantoll.com/2013/01/01/enter-should-submit-forms-stop-messing-with-that/
