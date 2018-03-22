@@ -15,14 +15,6 @@ function spoilFormGet(elem) {
   // Use getAttribute() since otherwise <input name="action"> is exposed as
   // elem.action.
 
- if( (String(elem.getAttribute('method')).toLowerCase() !== 'get') &&
-     (String(elem.method).toLowerCase() !== 'get')
- ) {
-  return;
- }
-  // Ditto - have to check here in case the form doesn't expressly specify
-  // a method
-
  var texts = elem.querySelectorAll(':scope input[type="text" i]');
  var searches = elem.querySelectorAll(':scope input[type="search" i]');
  var onetext = (texts.length === 1 && searches.length === 0);
@@ -64,9 +56,7 @@ function main() {
  );
 
  // Chrome autodetection, https://www.chromium.org/tab-to-search #2
- // Can't test for form[method="get" i] here because bleepingcomputer.com's
- // search form doesn't have an express @method
- document.querySelectorAll('form').forEach(spoilFormGet);
+ document.querySelectorAll('form:-webkit-any([method="get" i],:not([method]))').forEach(spoilFormGet);
 
 } //main
 
