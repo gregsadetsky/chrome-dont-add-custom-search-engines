@@ -3,17 +3,12 @@
 function spoilFormGet(elem) {
  // console.info({Found: elem});
 
- // Bail early if it's already one Chrome won't autodetect
- if( (!/^http/i.test(elem.getAttribute('action'))) &&
-     (!/^http/i.test(elem.action))
- ) {
-  return;
- }
-  // Need to check this here rather than in the selector since elem.action
-  // is a full URL (in my testing) even if the form specifies
-  // action="/whatever/path".
-  // Use getAttribute() since otherwise <input name="action"> is exposed as
-  // elem.action.
+ // Check whether the form submits to a HTTP(S) URL.
+ // A missing or relative action will be resolved against the page URL
+ // so it must have the same URI scheme which is all we care about
+ var action = elem.getAttribute('action');
+ if(!(action && action.indexOf('://') >= 0)) action = location.href;
+ if(!/^https?:\/\//i.test(action)) return;
 
  var texts = elem.querySelectorAll(':scope input[type="text" i]');
  var searches = elem.querySelectorAll(':scope input[type="search" i]');
