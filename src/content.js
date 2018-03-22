@@ -10,11 +10,10 @@ function spoilFormGet(elem) {
  if(!(action && action.indexOf('://') >= 0)) action = location.href;
  if(!/^https?:\/\//i.test(action)) return;
 
- var texts = elem.querySelectorAll(':scope input[type="text" i]');
- var searches = elem.querySelectorAll(':scope input[type="search" i]');
- var onetext = (texts.length === 1 && searches.length === 0);
- var onesearch = (texts.length === 0 && searches.length === 1);
- if( !(onetext || onesearch) ) return;
+ // Autodetection requires exactly one input of type text or search
+ // If the type attribute is missing, it defaults to `text`
+ // Readonly inputs do not count against this total
+ if(elem.querySelectorAll(':scope input:-webkit-any([type="text" i],[type="search" i],:not([type])):not([readonly])').length !== 1) return;
 
  if(elem.querySelector(':scope input[type="password" i]')) return;
  if(elem.querySelector(':scope input[type="file" i]')) return;
