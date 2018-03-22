@@ -3,35 +3,9 @@
 function spoilFormGet(elem) {
  // console.info({Found: elem});
 
- // Bail early if it's already one Chrome won't autodetect
- if( (!/^http/i.test(elem.getAttribute('action'))) &&
-     (!/^http/i.test(elem.action))
- ) {
-  return;
- }
-  // Need to check this here rather than in the selector since elem.action
-  // is a full URL (in my testing) even if the form specifies
-  // action="/whatever/path".
-  // Use getAttribute() since otherwise <input name="action"> is exposed as
-  // elem.action.
+ if(elem.querySelectorAll(':scope input:-webkit-any([type="text" i],[type="search" i])').length === 1) return;
 
- if( (String(elem.getAttribute('method')).toLowerCase() !== 'get') &&
-     (String(elem.method).toLowerCase() !== 'get')
- ) {
-  return;
- }
-  // Ditto - have to check here in case the form doesn't expressly specify
-  // a method
-
- var texts = elem.querySelectorAll(':scope input[type="text" i]');
- var searches = elem.querySelectorAll(':scope input[type="search" i]');
- var onetext = (texts.length === 1 && searches.length === 0);
- var onesearch = (texts.length === 0 && searches.length === 1);
- if( !(onetext || onesearch) ) return;
-
- if(elem.querySelector(':scope input[type="password" i]')) return;
- if(elem.querySelector(':scope input[type="file" i]')) return;
- if(elem.querySelector(':scope textarea')) return;
+ if(elem.querySelector(':scope :-webkit-any(input[type="password" i],input[type="file" i],textarea)')) return;
 
  // Add a <textarea> - unlike <input>, it doesn't block implicit submission
  // per https://www.tjvantoll.com/2013/01/01/enter-should-submit-forms-stop-messing-with-that/
@@ -64,9 +38,7 @@ function main() {
  );
 
  // Chrome autodetection, https://www.chromium.org/tab-to-search #2
- // Can't test for form[method="get" i] here because bleepingcomputer.com's
- // search form doesn't have an express @method
- document.querySelectorAll('form').forEach(spoilFormGet);
+ document.querySelectorAll('form:-webkit-any([method="get" i],:not([method])):-webkit-any([action^="http://" i],[action^="https://" i])').forEach(spoilFormGet);
 
 } //main
 
