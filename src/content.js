@@ -1,7 +1,7 @@
 
 // Add an extra child input to any form that only has one
 function spoilFormGet(elem) {
- // console.info({Found: elem});
+ console.info({Found: elem});
 
  // Check whether the form submits to a HTTP(S) URL.
  // A missing or relative action will be resolved against the page URL
@@ -26,7 +26,7 @@ function spoilFormGet(elem) {
  newelem.style.display='none';
  elem.appendChild(newelem);
 
- // console.info({Spoiled: elem});
+ console.info({Spoiled: elem});
 } //spoilFormGet
 
 function main() {
@@ -52,10 +52,6 @@ function main() {
  document.querySelectorAll('form:-webkit-any([method="get" i],:not([method]))').forEach(spoilFormGet);
 
 } //main
-
-//##console.info({before: document.documentElement.outerHTML});
-//##main(); // Try it early (we are running at document_start)
-//##console.info({after: document.documentElement.outerHTML});
 
 document.addEventListener('DOMContentLoaded', main);
 
