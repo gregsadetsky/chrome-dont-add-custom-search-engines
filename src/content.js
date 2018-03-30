@@ -1,37 +1,26 @@
+let numseen=0, numspoiled=0;
+let unspoiled=[];
 
 // Add an extra child input to any form that only has one
 function spoilFormGet(elem) {
- // console.info({Found: elem});
+ console.info({Found: elem});
+ ++numseen;
+ unspoiled.push(elem);
 
- // Bail early if it's already one Chrome won't autodetect
- if( (!/^http/i.test(elem.getAttribute('action'))) &&
-     (!/^http/i.test(elem.action))
- ) {
-  return;
- }
-  // Need to check this here rather than in the selector since elem.action
-  // is a full URL (in my testing) even if the form specifies
-  // action="/whatever/path".
-  // Use getAttribute() since otherwise <input name="action"> is exposed as
-  // elem.action.
+ // Check whether the form submits to a HTTP(S) URL.
+ // A missing or relative action will be resolved against the page URL
+ // so it must have the same URI scheme which is all we care about
+ var action = elem.getAttribute('action');
+ if(!(action && action.indexOf('://') >= 0)) action = location.href;
+ if(!/^https?:\/\//i.test(action)) return;
 
- if( (String(elem.getAttribute('method')).toLowerCase() !== 'get') &&
-     (String(elem.method).toLowerCase() !== 'get')
- ) {
-  return;
- }
-  // Ditto - have to check here in case the form doesn't expressly specify
-  // a method
+ // Autodetection requires exactly one input of type text or search
+ // If the type attribute is missing, it defaults to `text`
+ // Readonly inputs do not count against this total
+ if(elem.querySelectorAll(':scope input:-webkit-any([type="text" i],[type="search" i],:not([type])):not([readonly])').length !== 1) return;
 
- var texts = elem.querySelectorAll(':scope input[type="text" i]');
- var searches = elem.querySelectorAll(':scope input[type="search" i]');
- var onetext = (texts.length === 1 && searches.length === 0);
- var onesearch = (texts.length === 0 && searches.length === 1);
- if( !(onetext || onesearch) ) return;
-
- if(elem.querySelector(':scope input[type="password" i]')) return;
- if(elem.querySelector(':scope input[type="file" i]')) return;
- if(elem.querySelector(':scope textarea')) return;
+ // Autodetection also requires no password, file, or textarea elements
+ if(elem.querySelector(':scope :-webkit-any(input[type="password" i],input[type="file" i],textarea)')) return;
 
  // Add a <textarea> - unlike <input>, it doesn't block implicit submission
  // per https://www.tjvantoll.com/2013/01/01/enter-should-submit-forms-stop-messing-with-that/
@@ -41,7 +30,9 @@ function spoilFormGet(elem) {
  newelem.style.display='none';
  elem.appendChild(newelem);
 
- // console.info({Spoiled: elem});
+ console.info({Spoiled: elem});
+ ++numspoiled;
+ unspoiled.pop();
 } //spoilFormGet
 
 function main() {
@@ -64,15 +55,10 @@ function main() {
  );
 
  // Chrome autodetection, https://www.chromium.org/tab-to-search #2
- // Can't test for form[method="get" i] here because bleepingcomputer.com's
- // search form doesn't have an express @method
- document.querySelectorAll('form').forEach(spoilFormGet);
-
+ document.querySelectorAll('form:-webkit-any([method="get" i],:not([method]))').forEach(spoilFormGet);
+ console.log(`Spoiled ${numspoiled}/${numseen}.  Unspoiled were:`);
+ console.log(unspoiled);
 } //main
-
-//##console.info({before: document.documentElement.outerHTML});
-//##main(); // Try it early (we are running at document_start)
-//##console.info({after: document.documentElement.outerHTML});
 
 document.addEventListener('DOMContentLoaded', main);
 
