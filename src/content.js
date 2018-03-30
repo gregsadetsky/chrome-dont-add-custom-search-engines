@@ -1,7 +1,11 @@
+let numseen=0, numspoiled=0;
+let unspoiled=[];
 
 // Add an extra child input to any form that only has one
 function spoilFormGet(elem) {
  console.info({Found: elem});
+ ++numseen;
+ unspoiled.push(elem);
 
  // Check whether the form submits to a HTTP(S) URL.
  // A missing or relative action will be resolved against the page URL
@@ -27,6 +31,8 @@ function spoilFormGet(elem) {
  elem.appendChild(newelem);
 
  console.info({Spoiled: elem});
+ ++numspoiled;
+ unspoiled.pop();
 } //spoilFormGet
 
 function main() {
@@ -50,7 +56,8 @@ function main() {
 
  // Chrome autodetection, https://www.chromium.org/tab-to-search #2
  document.querySelectorAll('form:-webkit-any([method="get" i],:not([method]))').forEach(spoilFormGet);
-
+ console.log(`Spoiled ${numspoiled}/${numseen}.  Unspoiled were:`);
+ console.log(unspoiled);
 } //main
 
 document.addEventListener('DOMContentLoaded', main);
