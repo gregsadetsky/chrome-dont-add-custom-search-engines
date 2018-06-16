@@ -40,7 +40,7 @@ function spoilFormGet(elem) {
     }
 } //spoilFormGet
 
-function main() {
+function main() {   // runs on DOMContentLoaded
 
     // OpenSearch - e.g., https://martin-thoma.com/search-engine-autodiscovery/
     // Uses CSS4 selectors, Chrome 49+
@@ -59,17 +59,15 @@ function main() {
         }
     );
 
-    // if URL has a path, no autodetection will be performed. So only perform "spoil" when path is "/"
-    if (location.pathname == '/') 
-    // Chrome autodetection, https://www.chromium.org/tab-to-search #2
-    window.addEventListener('load', function(){
-      document.querySelectorAll('form:-webkit-any([method="get" i],:not([method]))').forEach(spoilFormGet);
-  
-      if(DEBUG) {
-          console.log(`Spoiled ${numspoiled}/${numseen}.  Unspoiled were:`);
-          console.log(unspoiled);
-      }
-    } );
+    // Chrome autodetection, https://www.chromium.org/tab-to-search #2 .
+    window.addEventListener('load', function() {
+        document.querySelectorAll('form:-webkit-any([method="get" i],:not([method]))').forEach(spoilFormGet);
+
+        if(DEBUG) {
+            console.log(`Spoiled ${numspoiled}/${numseen}.  Unspoiled were:`);
+            console.log(unspoiled);
+        }
+    });
 } //main
 
 document.addEventListener('DOMContentLoaded', main);
