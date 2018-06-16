@@ -34,6 +34,7 @@ Additional contributors (in alphabetical order):
  - [jhard](https://github.com/jhard)
  - [karlicoss](https://github.com/karlicoss)
  - [panozzaj](https://github.com/panozzaj)
+ - [Procyon-b](https://github.com/Procyon-b)
  - [rspeed](https://github.com/rspeed)
 
 
