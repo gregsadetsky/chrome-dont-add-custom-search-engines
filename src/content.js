@@ -2,7 +2,7 @@ const DEBUG=true;
 let numseen=0, numspoiled=0;
 let unspoiled=[];
 
-// called when the user clicks an element of the form (any field or button). The parameter passed if the event object
+// called when the user clicks an element of the form (any field or button). The parameter passed is the event object
 function clickApply(e) {
   if(DEBUG) console.info({'form onclick':e});
   // remove onclick. One fix only
@@ -21,7 +21,7 @@ function applyFix(elem) {
 // Add an extra child input to any form that only has one
 function spoilFormGet(elem) {
     if(DEBUG) {
-        console.info({t:this, Found: elem});
+        // cleaning debug output. comment out, this is displayed in "unspoiled": //console.info({t:this, Found: elem});
         ++numseen;
         unspoiled.push(elem);
     }
@@ -36,14 +36,14 @@ function spoilFormGet(elem) {
     // Autodetection requires exactly one input of type text or search
     // If the type attribute is missing, it defaults to `text`
     // Readonly inputs do not count against this total
-    if(elem.querySelectorAll(':scope input:-webkit-any([type="text" i],[type="search" i],:not([type])):not([readonly])').length !== 1) return;
+    if(elem.querySelectorAll(':scope input:-webkit-any([type="text" i],[type="search" i],:not([type])):not([readonly])[name]').length !== 1) return;
 
     // Autodetection also requires no password, file, or textarea elements
     if(elem.querySelector(':scope :-webkit-any(input[type="password" i],input[type="file" i],textarea)')) return;
 
     // Add a <textarea> - unlike <input>, it doesn't block implicit submission
     // per https://www.tjvantoll.com/2013/01/01/enter-should-submit-forms-stop-messing-with-that/
-
+    
     // apply the fix now, or place it in onclick.  "this" is a parameter passed by foreach(). see below
     if (this == true) {
       // remove onclick placed during first pass
@@ -66,8 +66,8 @@ function autoDetect(now,cmt) {
     if(DEBUG) console.log('autoDetect: '+(++debugAutoDetect)+' ('+cmt+')')
     document.querySelectorAll('form:-webkit-any([method="get" i],:not([method]))').forEach(spoilFormGet,now);
     if(DEBUG) {
-        console.log(`Spoiled ${numspoiled}/${numseen}.  Unspoiled were:`);
-        console.log(unspoiled);
+        console.log(`Spoiled ${numspoiled}/${numseen}.`+(unspoiled.length?'  Unspoiled were:':'') );
+        if (unspoiled.length) console.log(unspoiled);
     }
 
     // we reset spoil vars for next call
@@ -95,15 +95,12 @@ function main() {   // runs on DOMContentLoaded
         }
     );
 
-    // if URL has a path, no autodetection will be performed. So only perform "spoil" when path is "/"
-    // Chrome autodetection, https://www.chromium.org/tab-to-search #2
-
     // #1 call it now without applying the fix
-    // #2 call it in 1500 ms  and applies the fix
-    // #3 call when document loaded, and applies the fix
-    // if <form> are added/modified dynamically before the document is fully loaded #1 could miss it,
+    // #2 call it in 1500 ms  and apply the fix
+    // #3 call when document loaded, and apply the fix
+    // if <form> is added/modified dynamically before the document is fully loaded #1 could miss it,
     // but not #2 & #3. Note that #2 could fire after #3 if the page is fast to load.
-    // Once the fix is applied, the <form> can't be found by subsequent execution ot autoDetect,
+    // Once the fix is applied, the <form> can't be found by subsequent execution of autoDetect,
     // so the fix can only be applied once (#1 is not applied but delayed until #2 or #3 fires, or if the user clicks).
 
     window.addEventListener('load', function() { autoDetect(true,'Load'); } );
