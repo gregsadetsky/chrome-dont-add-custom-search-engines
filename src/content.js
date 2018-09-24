@@ -1,4 +1,4 @@
-const DEBUG=true;
+const DEBUG=false;
 let numseen=0, numspoiled=0;
 let unspoiled=[];
 

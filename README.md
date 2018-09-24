@@ -36,5 +36,3 @@ Additional contributors (in alphabetical order):
  - [panozzaj](https://github.com/panozzaj)
  - [Procyon-b](https://github.com/Procyon-b)
  - [rspeed](https://github.com/rspeed)
-
-
