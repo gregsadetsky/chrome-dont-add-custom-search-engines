@@ -36,3 +36,9 @@ Additional contributors (in alphabetical order):
  - [panozzaj](https://github.com/panozzaj)
  - [Procyon-b](https://github.com/Procyon-b)
  - [rspeed](https://github.com/rspeed)
+
+## License
+
+[CC-BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/legalcode).
+See [LICENSE.txt](LICENSE.txt) or the 
+[summary](https://creativecommons.org/licenses/by-sa/3.0/).
