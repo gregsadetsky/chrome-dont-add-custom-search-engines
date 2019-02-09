@@ -77,9 +77,7 @@ function autoDetect(now, when_called) {
     unspoiled=[];
 }
 
-function onDOMContentLoaded()
-{
-
+function catchOpenSearch() {
     // OpenSearch - e.g., https://martin-thoma.com/search-engine-autodiscovery/
     // Uses CSS4 selectors, Chrome 49+
     document.querySelectorAll('[type="application/opensearchdescription+xml" i]').forEach(
@@ -96,6 +94,11 @@ function onDOMContentLoaded()
             // console.info({"Spoiled by rel removal": it});
         }
     );
+}
+
+function onDOMContentLoaded() {
+    // OpenSearch and Suggestion service moved to a function
+    catchOpenSearch();
 
     // #1 call it now (i.e., DOMContentLoaded) without applying the fix
     // #2 call it in 1500 ms and apply the fix
@@ -105,7 +108,7 @@ function onDOMContentLoaded()
     // Once the fix is applied, the <form> can't be found by subsequent execution of autoDetect,
     // so the fix can only be applied once (#1 is not applied but delayed until #2 or #3 fires, or if the user clicks).
 
-    window.addEventListener('load', function() { autoDetect(true,'Load'); } );  // #3
+    window.addEventListener('load', function() { catchOpenSearch(); autoDetect(true,'Load'); } );  // #3
     setTimeout(function() { autoDetect(true,'Timer'); } ,1500);     // #2
     autoDetect(false,'onClick');                                    // #1
 
