@@ -4,6 +4,7 @@
   "name": "Don't add custom search engines",
   "version": "0.0.5",
   "description": "Prevent Google Chrome from auto-adding custom search engines",
+  "homepage_url": "https://github.com/gregsadetsky/chrome-dont-add-custom-search-engines",
   "minimum_chrome_version": "49.0.0.0",
   "offline_enabled": true,
   "content_scripts": [
