@@ -2,13 +2,14 @@ const DEBUG=false;
 let numseen=0, numspoiled=0;
 let unspoiled=[];
 
-// called when the user clicks an element of the form (any field or button). The parameter passed is the event object
+// called when the user clicks an element of the form (any field or button).
+// The parameter passed is the event object.
 function clickApply(e) {
-  if(DEBUG) console.info({'form onclick':e});
-  // remove onclick. One fix only
-  e.srcElement.form.removeEventListener("click", clickApply);
-  applyFix(e.srcElement.form);
-}
+    if(DEBUG) console.info({'form onclick':e});
+    // remove onclick. One fix only
+    e.srcElement.form.removeEventListener("click", clickApply);
+    applyFix(e.srcElement.form);
+} //clickApply
 
 // add a new <textarea> element
 function applyFix(elem) {
@@ -16,7 +17,7 @@ function applyFix(elem) {
   newelem.name = '';
   newelem.style.display='none';
   elem.appendChild(newelem);
-}
+} //applyFix
 
 // Add an extra child input to any form that only has one
 function spoilFormGet(elem) {
@@ -62,7 +63,7 @@ function spoilFormGet(elem) {
 
 var debugAutoDetect=0;
 
-// move this part of the code here, since it's called 3 times
+// move this part of the code here, since it's called multiple times
 function autoDetect(now, when_called) {
     if(DEBUG) console.log('autoDetect: '+(++debugAutoDetect)+' ('+when_called+')');
     document.querySelectorAll('form:-webkit-any([method="get" i],:not([method]))').forEach(spoilFormGet,{now});
@@ -75,17 +76,16 @@ function autoDetect(now, when_called) {
     numseen=0;
     numspoiled=0;
     unspoiled=[];
-}
+} //autoDetect
 
-function onDOMContentLoaded()
-{
-
+function catchOpenSearch() {
+    if(DEBUG) console.info('catchOpenSearch called');
     // OpenSearch - e.g., https://martin-thoma.com/search-engine-autodiscovery/
     // Uses CSS4 selectors, Chrome 49+
     document.querySelectorAll('[type="application/opensearchdescription+xml" i]').forEach(
         function (it) {
             it.removeAttribute('type');
-            // console.info({"Spoiled by type removal": it});
+            if(DEBUG) console.info({"Spoiled by type removal": it});
         }
     );
 
@@ -93,19 +93,33 @@ function onDOMContentLoaded()
     document.querySelectorAll('url[rel="suggestions" i]').forEach(
         function (it) {
             it.removeAttribute('rel');
-            // console.info({"Spoiled by rel removal": it});
+            if(DEBUG) console.info({"Spoiled by rel removal": it});
         }
     );
+} //catchOpenSearch
+
+function onDOMContentLoaded() {
+    if(DEBUG) console.log('onDOMContentLoaded');
+
+    catchOpenSearch();
 
     // #1 call it now (i.e., DOMContentLoaded) without applying the fix
     // #2 call it in 1500 ms and apply the fix
-    // #3 call when document loaded, and apply the fix
-    // if <form> is added/modified dynamically before the document is fully loaded #1 could miss it,
-    // but not #2 & #3. Note that #2 could fire after #3 if the page is fast to load.
-    // Once the fix is applied, the <form> can't be found by subsequent execution of autoDetect,
-    // so the fix can only be applied once (#1 is not applied but delayed until #2 or #3 fires, or if the user clicks).
+    // #3 call when document loaded, and apply the fix.
 
-    window.addEventListener('load', function() { autoDetect(true,'Load'); } );  // #3
+    // if <form> is added/modified // dynamically before the document
+    // is fully loaded, #1 could miss it, but not #2 & #3. Note that #2
+    // could fire after #3 if the page is fast to load.  Once the fix
+    // is applied, the <form> can't be found by subsequent execution
+    // of autoDetect, so the fix can only be applied once (#1 is not
+    // applied but delayed until #2 or #3 fires, or if the user
+    // clicks).
+
+    window.addEventListener('load', function() {
+        if(DEBUG) console.log('onload');
+        catchOpenSearch();
+        autoDetect(true,'Load');
+    } );  // #3
     setTimeout(function() { autoDetect(true,'Timer'); } ,1500);     // #2
     autoDetect(false,'onClick');                                    // #1
 
