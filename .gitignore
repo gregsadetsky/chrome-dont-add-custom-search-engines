@@ -34,3 +34,5 @@ tags
 
 # dependencies
 /node_modules/
+
+dist/
