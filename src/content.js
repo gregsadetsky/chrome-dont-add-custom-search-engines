@@ -2,6 +2,8 @@ const DEBUG=false;
 let numseen=0, numspoiled=0;
 let unspoiled=[];
 
+var sitesWMut={};
+
 // called when the user clicks an element of the form (any field or button).
 // The parameter passed is the event object.
 function clickApply(e) {
@@ -61,7 +63,61 @@ function spoilFormGet(elem) {
     }
 } //spoilFormGet
 
-var debugAutoDetect=0;
+var debugAutoDetect=0, mutInst=false;
+
+function parseMut(mutL) {
+    if(DEBUG) console.info('mutations...',mutL);
+    for (var mut of mutL) {
+        if (mut.type == 'childList' && mut.addedNodes.length) {
+            let e,i;
+            for (i=0; e=mut.addedNodes[i]; i++) {
+                if (e.nodeType==1 && e.querySelector('form')) {
+                    if(DEBUG) console.info('form added');
+                    autoDetect(true,'Mutation');
+                    return;
+                    }
+                }
+            }
+        }
+}
+
+function addMut() {
+    if (mutInst) return;
+    mutInst=true;
+    var isMut=sitesWMut[location.host];
+    if (!isMut) return;
+
+    const obs = new MutationObserver(parseMut);
+    var a=[], config={ attributes: false, childList: true, subtree: true, characterData: false };
+    if (isMut[0]) {
+        try{
+            a=document.querySelectorAll(isMut[0]);
+            }
+        catch(e){
+            if(DEBUG) console.info('observer not attached - error: %c%s','color:red;',e.message);
+            return;
+            }
+        }
+    if (a.length) {
+        for (let e,i=0; e=a[i]; i++) {
+            if(DEBUG) console.info('observer looked for ', {e},e );
+            for (let j=1,s; s=isMut[j]; j++) {
+                if (s=='parentNode' || s=='pN') e=e.parentNode;
+                else if (s=='nextElementSibling' || s=='nES') e=e.nextElementSibling || e;
+                else if (s=='previousElementSibling' || s=='pES') e=e.previousElementSibling || e;
+                }
+            if(DEBUG) console.info('observer attached on ', {e},e );
+            obs.observe(e, config );
+            }
+        }
+    else if (isMut.fb || !isMut.length) {
+        if(DEBUG) console.info('observer on body');
+        obs.observe(document.body, config );
+        }
+    else if(DEBUG) console.info('observer not attached');
+}
+
+
 
 // move this part of the code here, since it's called multiple times
 function autoDetect(now, when_called) {
@@ -71,6 +127,8 @@ function autoDetect(now, when_called) {
         console.log(`Spoiled ${numspoiled}/${numseen}.`+(unspoiled.length?'  Unspoiled were:':'') );
         if (unspoiled.length) console.log(unspoiled);
     }
+
+    if (now && !mutInst) addMut();
 
     // we reset spoil vars for next call
     numseen=0;
@@ -124,6 +182,13 @@ function onDOMContentLoaded() {
     autoDetect(false,'onClick');                                    // #1
 
 } //onDOMContentLoaded
+
+chrome.runtime.sendMessage({host: location.host}, function(response) {
+    if(DEBUG) console.info('site config', response);
+    if (response.siteMut) {
+        sitesWMut[location.host]=response.siteMut;
+        }
+});
 
 document.addEventListener('DOMContentLoaded', onDOMContentLoaded);
 
