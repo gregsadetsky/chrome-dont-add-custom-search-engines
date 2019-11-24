@@ -1,44 +1,51 @@
 <html>
-<head>
-<style>
-body {
-  font-size: 85%;
-  max-width: 50em;
-}
-#list, #def {
-  width: 50em;
-  height: 16em;
-}
-#def {
-  height: 1em;
-}
-ul {
-  omargin-left: 0.5em;
-  padding-left: 25px;
-}
 
-</style>
+<head>
+    <style>
+        body {
+            font-size: 85%;
+            max-width: 50em;
+        }
+
+        #list,
+        #def {
+            width: 50em;
+            height: 16em;
+        }
+
+        #def {
+            height: 1em;
+        }
+
+        ul {
+            omargin-left: 0.5em;
+            padding-left: 25px;
+        }
+
+    </style>
 </head>
+
 <body>
-<h2>Sites fixed with mutations observers</h2>
-One hostname per line. The format is:<br>
-<pre>  hostname [!] ["selector(s)"] [parentNode/nextElementSibling/previousElementSibling] [another:pN/nES/pES]</pre>
-<ul>
-<li>[] are optional</li>
-<li>"selectors" are CSS selectors</li>
-<li>no selector means attach to "body" (also means that "hostname" is alone on the line)</li>
-<li>! means that if the selector is not found, fall back to the "body" element. Useful to debug the page, but can increase CPU usage.</li>
-<li>// is a comment</li>
-</ul>
-<br>
-<textarea id="def" disabled>// this is the default list of hosts
+    <h2>Sites fixed with mutations observers</h2>
+    One hostname per line. The format is:<br>
+    <pre>  hostname [!] ["selector(s)"] [parentNode/nextElementSibling/previousElementSibling] [another:pN/nES/pES]</pre>
+    <ul>
+        <li>[] are optional</li>
+        <li>"selectors" are CSS selectors</li>
+        <li>no selector means attach to "body" (also means that "hostname" is alone on the line)</li>
+        <li>! means that if the selector is not found, fall back to the "body" element. Useful to debug the page, but can increase CPU usage.</li>
+        <li>// is a comment</li>
+    </ul>
+    <br>
+    <textarea id="def" disabled>// this is the default list of hosts
 // to disable one of them, use the following syntax:
 // hostname null
 // ex: www.nytimes.com null
 // this was the syntax before 9/2019: www.nytimes.com ".css-mgtjo2" parentNode
 </textarea><br>
-<textarea id="list"></textarea><br>
-<button id="b">Save</button>
-<script src="options.js"></script>
+    <textarea id="list"></textarea><br>
+    <button id="b">Save</button>
+    <script src="options.js"></script>
 </body>
+
 </html>
