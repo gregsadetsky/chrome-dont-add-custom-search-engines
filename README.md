@@ -40,5 +40,12 @@ Additional contributors (in alphabetical order):
 ## License
 
 [CC-BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/legalcode).
-See [LICENSE.txt](LICENSE.txt) or the 
+See [LICENSE.txt](LICENSE.txt) or the
 [summary](https://creativecommons.org/licenses/by-sa/3.0/).
+
+## Developing
+
+We welcome issues and pull requests!  The main files are
+`src/background.js` and `src/content.js`.  Before committing changes, please
+run `./beautify.sh` to pretty-print the source.  This reduces the number
+of whitespace changes and makes it easier to focus on the substance of PRs.
