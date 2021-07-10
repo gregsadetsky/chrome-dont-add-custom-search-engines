@@ -1,0 +1,22 @@
+{
+  "name": "chrome-dont-add-custom-search-engines",
+  "version": "0.0.6",
+  "description": "Google Chrome extension that stops sites from adding custom search engines",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gregsadetsky/chrome-dont-add-custom-search-engines.git"
+  },
+  "author": "",
+  "license": "CC-BY-SA-3.0",
+  "bugs": {
+    "url": "https://github.com/gregsadetsky/chrome-dont-add-custom-search-engines/issues"
+  },
+  "homepage": "https://github.com/gregsadetsky/chrome-dont-add-custom-search-engines#readme",
+  "devDependencies": {
+    "js-beautify": "^1.10.2"
+  }
+}
