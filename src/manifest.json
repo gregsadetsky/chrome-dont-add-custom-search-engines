@@ -1,11 +1,11 @@
 {
   "author": "Greg Sadetsky et al.",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Don't add custom search engines",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Prevent Google Chrome from auto-adding custom search engines",
   "homepage_url": "https://github.com/gregsadetsky/chrome-dont-add-custom-search-engines",
-  "minimum_chrome_version": "49.0.0.0",
+  "minimum_chrome_version": "88.0.0.0",
   "offline_enabled": true,
   "content_scripts": [
     {
@@ -15,18 +15,17 @@
     }
   ],
   "background": {
-    "scripts": ["bg.js"]
+    "service_worker": "bg.js"
   },
   "icons": {
     "64": "icon-64.png",
     "128": "icon-128.png"
   },
-  "browser_action": {
+  "action": {
     "default_title": "Don't add custom search engines",
     "default_icon": "icon-64.png"
   },
-  "permissions": [
-    "http://*/*",
-    "https://*/*"
+  "optional_host_permissions": [
+    "*://*/*"
   ]
 }
